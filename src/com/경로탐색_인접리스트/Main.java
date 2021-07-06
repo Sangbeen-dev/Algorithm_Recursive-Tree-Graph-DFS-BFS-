@@ -1,19 +1,20 @@
-package com.경로탐색_인접행렬;
+package com.경로탐색_인접리스트;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 	static int n, m, answer =0;
 	static int[] ch;
-	static int[][] graph;
+	static ArrayList<ArrayList<Integer>> graph;
 	public void DFS(int v) {
-		if(v==n) answer++;
+		if(v==n) answer ++;
 		else {
-			for(int i=1; i<=n; i++) {
-				if(graph[v][i]==1 && ch[i]==0) {
-					ch[i]=1;
-					DFS(i);
-					ch[i]=0;
+			for(int nv:graph.get(v)) {
+				if(ch[nv]==0) {
+					ch[nv] = 1;
+					DFS(nv);
+					ch[nv]=0;
 				}
 			}
 		}
@@ -23,12 +24,15 @@ public class Main {
 		Scanner kb = new Scanner(System.in);
 		n = kb.nextInt();
 		m = kb.nextInt();
-		graph=new int[n+1][n+1];
 		ch=new int[n+1];
+		graph = new ArrayList<ArrayList<Integer>>();
+		for(int i=0; i<=n; i++) {
+			graph.add(new ArrayList<Integer>());
+		}
 		for(int i=0; i<m; i++) {
 			int a = kb.nextInt();
 			int b = kb.nextInt();
-			graph[a][b]=1;
+			graph.get(a).add(b);
 		}
 		ch[1]=1;
 		t.DFS(1);
