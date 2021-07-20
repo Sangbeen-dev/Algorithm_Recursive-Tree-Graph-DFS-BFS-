@@ -2,43 +2,41 @@ package com.송아지찾기_BFS;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 
-class Node{
-	int data;
-	Node lt, rt;
-	public Node(int val) {
-		data = val;
-		lt=rt=null;
-	}
-}
 public class Main {
-	Node root;
-	public void BFS(Node root) {
-		Queue<Node> Q = new LinkedList<>();
-		Q.offer(root);
+	int[] dis = {1,-1,5};
+	int[] ch;
+	Queue<Integer> Q = new LinkedList<>();
+	
+	public int BFS(int s, int e) {
+		ch= new int[10001];
+		ch[s] = 1;
+		Q.offer(s);
 		int L = 0;
 		while(!Q.isEmpty()) {
 			int len = Q.size();
-			System.out.print(L+" : ");
-			for (int i = 0; i < len; i++) {
-				Node cur = Q.poll();
-				System.out.print(cur.data+ " ");
-				if(cur.lt!=null) Q.offer(cur.lt);
-				if(cur.rt!=null) Q.offer(cur.rt);
-			}//for
+			for(int i=0; i<len; i++) {
+				int x = Q.poll();
+				if(x==e) return L;
+				for(int j=0; j<3; j++) {
+					int nx = dis[j]+x;
+					if(nx>0 && nx<100001 && ch[nx]==0) {
+						ch[nx]=1;
+						Q.offer(nx);
+					}
+				}
+			}
 			L++;
-			System.out.println();
-		} //while
+		}
+		return 0;
 	}
 	public static void main(String[] args) {
-		Main tree = new Main();
-		tree.root=new Node(1);
-		tree.root.lt=new Node(2);
-		tree.root.rt=new Node(3);
-		tree.root.lt.lt=new Node(4);
-		tree.root.lt.rt=new Node(5);
-		tree.root.rt.lt=new Node(6);
-		tree.root.rt.rt=new Node(7);
-		tree.BFS(tree.root);
+		Main t = new Main();
+		Scanner kb = new Scanner(System.in);
+		int s = kb.nextInt();
+		int e = kb.nextInt();
+		System.out.println(t.BFS(s,e));
+		kb.close();
 	}
 }
